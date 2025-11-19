@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "name": "XHS-Downloader",
+      "path": "."
+    },
+    {
+      "name": "Spider_XHS",
+      "path": "./Spider_XHS"
+    }
+  ],
+  "settings": {
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.black-formatter",
+      "ms-python.isort",
+      "ms-python.flake8"
+    ]
+  }
+}
