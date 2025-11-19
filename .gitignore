@@ -25,6 +25,9 @@ config.ini
 !.claude/skills/
 !.claude/skills/*
 
+# VSCode 配置目录
+.vscode/
+
 # 系统文件
 .DS_Store  # macOS
 Thumbs.db  # Windows
