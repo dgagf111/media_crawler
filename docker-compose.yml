@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      # 应用环境
+      - PPT_ENV=prod
+
+      # 数据库配置（通过.env文件或环境变量注入）
+      # 请使用环境变量设置：PPT_DATABASE__USERNAME, PPT_DATABASE__PASSWORD
+      - PPT_DATABASE__HOST=116.198.240.197
+      - PPT_DATABASE__PORT=3306
+      - PPT_DATABASE__DATABASE=discordbot
+
+      # Redis配置
+      - PPT_CACHE__REDIS__HOST=host.docker.internal
+      - PPT_CACHE__REDIS__PORT=6379
+      - PPT_CACHE__REDIS__DB=0
+
+    # 使用环境变量文件（推荐）
+    env_file:
+      - .env
+
+    # 或使用Docker secrets（生产环境推荐）
+    # secrets:
+    #   - mysql_password
+    #   - aes_encryption_key
+
+# Docker secrets定义（生产环境使用）
+# secrets:
+#   mysql_password:
+#     file: ./secrets/mysql_password.txt
+#   aes_encryption_key:
+#     file: ./secrets/aes_key.hex

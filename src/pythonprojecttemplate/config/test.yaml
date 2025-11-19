@@ -1,0 +1,104 @@
+# 测试环境配置文件
+
+database:
+  driver: mysql+pymysql
+  username: test_user
+  password: test_password
+  host: localhost
+  port: 3306
+  database: test_database
+  pool_size: 2
+  max_overflow: 2
+  pool_recycle: 3600
+
+# 定时器任务配置
+tasks:
+  # 配置说明：
+  # trigger: 定义任务的触发方式
+  #   - interval: 间隔触发，可以使用 weeks, days, hours, minutes, seconds 等参数
+  #   - cron: 在特定时间触发，使用 cron 表达式格式
+  #   - date: 在指定日期时间触发（单次）
+  # args: 触发器的具体参数，根据 trigger 类型而不同
+  # max_attempts: 任务失败后的最大重试次数
+  #   - 如果任务执行失败，调度器会尝试重新执行，直到达到这个次数
+  # retry_delay: 重试之间的等待时间（秒）
+  #   - 每次重试之前，调度器会等待这里指定的秒数
+
+  # 任务1配置
+  task1:
+    # 触发器类型：每隔一定时间执行一次
+    trigger: interval
+    # 触发器参数：每10秒执行一次
+    args:
+      seconds: 1
+    # 重试机制-最大重试次数：如果任务失败，最多重试3次
+    max_attempts: 3
+    # 重试机制-重试延迟：每次重试之间等待2秒
+    retry_delay: 2
+  # 任务2配置
+  task2:
+    # 触发器类型：在特定时间执行
+    trigger: cron
+    # 触发器参数：每天12:00执行
+    args:
+      hour: 12
+      minute: 0
+    # 重试机制-最大重试次数：如果任务失败，最多重试5次
+    max_attempts: 5
+    # 重试机制-重试延迟：每次重试之间等待5秒
+    retry_delay: 5
+# 如果任务在所有重试后仍然失败，它将被标记为失败，并等待下一次调度
+
+# 缓存配置（测试环境）
+cache:
+  type: memory  # 测试环境使用内存缓存，避免外部依赖
+  ttl: 600  # 测试环境使用较短的缓存时间
+  max_size: 100  # 测试环境限制缓存大小
+  redis:
+    host: localhost
+    port: 6379
+    db: 1  # 测试环境使用不同的Redis数据库
+
+# 监控配置
+monitoring:
+  prometheus_port: 9966  # Prometheus监控服务的端口号，用于暴露监控指标
+  cpu_threshold: 80  # CPU使用率阈值（百分比），超过此值将触发警告
+  memory_threshold: 80  # 内存使用率阈值（百分比），超过此值将触发警告
+  max_retries: 2  # 指标服务重启次数
+  retry_interval_seconds: 2  # 指标服务重启间隔
+
+# API服务器配置（测试环境）
+api:
+  host: "127.0.0.1"  # 测试环境使用本地地址
+  port: 8001  # 测试环境使用不同端口
+  loop: "asyncio"
+  open_api_on_startup: false
+  docs_url: "/docs"
+  cors_origins: ["*"]
+  max_concurrency: 50  # 测试环境使用较低的并发数
+  request_timeout: 60  # 测试环境允许更长的超时时间
+  
+  # API版本（从公共配置获取）
+  api_version: v1
+
+security:
+  token:
+    secret_key: test-secret-key-for-testing-only
+    algorithm: HS256
+    access_token_expire_minutes: 15
+    refresh_token_expire_days: 2
+  revocation:
+    backend: memory
+    key_prefix: ppt:test:security
+    default_ttl_seconds: 172800
+    memory_cleanup_interval_seconds: 180
+    redis:
+      host: localhost
+      port: 6379
+      db: 15
+      username:
+      password:
+      ssl: false
+  audit:
+    enabled: true
+    include_username: true

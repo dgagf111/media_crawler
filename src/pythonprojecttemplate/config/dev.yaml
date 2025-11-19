@@ -1,0 +1,128 @@
+# 开发环境配置文件
+
+database:
+  driver: mysql+pymysql
+  username: your_username
+  password: your_password
+  host: localhost
+  port: 3306
+  database: your_database
+  pool_size: 5
+  max_overflow: 10
+  pool_recycle: 3600
+
+# 定时器任务配置
+tasks:
+  # 配置说明：
+  # trigger: 定义任务的触发方式
+  #   - interval: 间隔触发，可以使用 weeks, days, hours, minutes, seconds 等参数
+  #   - cron: 在特定时间触发，使用 cron 表达式格式
+  #   - date: 在指定日期时间触发（单次）
+  # args: 触发器的具体参数，根据 trigger 类型而不同
+  # max_attempts: 任务失败后的最大重试次数
+  #   - 如果任务执行失败，调度器会尝试重新执行，直到达到这个次数
+  # retry_delay: 重试之间的等待时间（秒）
+  #   - 每次重试之前，调度器会等待这里指定的秒数
+
+  # 任务1配置
+  task1:
+    # 触发器类型：每隔一定时间执行一次
+    trigger: interval
+    # 触发器参数：每10秒执行一次
+    args:
+      seconds: 1
+    # 重试机制-最大重试次数：如果任务失败，最多重试3次
+    max_attempts: 3
+    # 重试机制-重试延迟：每次重试之间等2秒
+    retry_delay: 2
+  # 任务2配置
+  task2:
+    # 触发器类型：在特定时间执行
+    trigger: cron
+    # 触发器参数：每天12:00执行
+    args:
+      hour: 12
+      minute: 0
+    # 重试机制-最大重试次数：如果任务失败，最多重试5次
+    max_attempts: 5
+    # 重试机制-重试延迟：每次重试之间等待5秒
+    retry_delay: 5
+# 如果任务在所有重试后仍然失败，它将被标记为失败，并等待下一次调度
+
+# 缓存配置（开发环境）
+cache:
+  type: memory  # 开发环境使用内存缓存，无需Redis
+  ttl: 3600  # 默认缓存时间（秒），设置缓存项的生存时间
+  max_size: 1000  # 最大缓存项数，仅适用于内存缓存，用于限制内存使用
+  redis:
+    host: localhost
+    port: 6379
+    db: 0  # Redis数据库索引，用于选择特定的数据库
+
+# 监控配置
+monitoring:
+  prometheus_port: 9966  # Prometheus监控服务的端口号，用于暴露监控指标
+  cpu_threshold: 80  # CPU使用率阈值（百分比），超过此值将触发警告
+  memory_threshold: 80  # 内存使用率阈值（百分比），超过此值将触发警告
+  max_retries: 5  # 指标服务器启动失败时的最大重试次数
+  retry_interval_seconds: 5  # 指标服务器重试间隔
+
+# API服务器配置（开发环境）
+api:
+  # 服务器监听的IP地址
+  # "0.0.0.0" 表示监听所有可用的网络接口
+  host: "0.0.0.0"
+  
+  # 服务器监听的端口号
+  # 8000 是常用的开发端口,生产环境可能需要使用其他端口
+  port: 8000
+  
+  # 事件循环类型
+  # "asyncio" 是Python的标准异步IO库,适用于大多数情况
+  # 其他选项可能包括 "uvloop" (更快的事件循环实现)
+  loop: "asyncio"
+  
+  # 是否在启动时打开API文档
+  # true 表示启动服务器时自动打开Swagger UI文档
+  open_api_on_startup: true  # 开发环境自动打开文档
+  
+  # API文档的URL路径
+  # "/docs" 是FastAPI的默认Swagger UI路径
+  docs_url: "/docs"
+  
+  # 允许跨域请求的源
+  # "*" 表示允许所有源,生产环境应该指定具体的域名
+  cors_origins: ["*"]
+  
+  # 最大并发请求数
+  # 控制服务器同时处理的最大请求数,有助于防止过载
+  max_concurrency: 100
+  
+  # 请求超时时间(秒)
+  # 如果请求处理时间超过此值,将返回超时错误
+  request_timeout: 30
+  
+  # API版本（从公共配置获取）
+  api_version: v1
+
+security:
+  token:
+    secret_key: your-secret-key-for-development
+    algorithm: HS256
+    access_token_expire_minutes: 180
+    refresh_token_expire_days: 7
+  revocation:
+    backend: memory
+    key_prefix: ppt:security
+    default_ttl_seconds: 604800
+    memory_cleanup_interval_seconds: 120
+    redis:
+      host: localhost
+      port: 6379
+      db: 2
+      username:
+      password:
+      ssl: false
+  audit:
+    enabled: true
+    include_username: true

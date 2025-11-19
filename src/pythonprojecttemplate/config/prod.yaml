@@ -1,0 +1,126 @@
+# 生产环境配置文件
+
+database:
+  driver: mysql+pymysql
+  username: ${PPT_DATABASE__USERNAME}
+  password: ${PPT_DATABASE__PASSWORD}
+  host: ${PPT_DATABASE__HOST}
+  port: ${PPT_DATABASE__PORT}
+  database: ${PPT_DATABASE__DATABASE}
+  pool_size: 10
+  max_overflow: 20
+  pool_recycle: 3600
+
+# 定时器任务配置
+tasks:
+  # 配置说明：
+  # trigger: 定义任务的触发方式
+  #   - interval: 间隔触发，可以使用 weeks, days, hours, minutes, seconds 等参数
+  #   - cron: 在特定时间触发，使用 cron 表达式格式
+  #   - date: 在指定日期时间触发（单次）
+  # args: 触发器的具体参数，根据 trigger 类型而不同
+  # max_attempts: 任务失败后的最大重试次数
+  #   - 如果任务执行失败，调度器会尝试重新执行，直到达到这个次数
+  # retry_delay: 重试之间的等待时间（秒）
+  #   - 每次重试之前，调度器会等待这里指定的秒数
+
+  # 任务1配置
+  task1:
+    # 触发器类型：每隔一定时间执行一次
+    trigger: interval
+    # 触发器参数：每10秒执行一次
+    args:
+      seconds: 1
+    # 重试机制-最大重试次数：如果任务失败，最多重试3次
+    max_attempts: 3
+    # 重试机制-重试延迟：每次重试之间等待2秒
+    retry_delay: 2
+  # 任务2配置
+  task2:
+    # 触发器类型：在特定时间执行
+    trigger: cron
+    # 触发器参数：每天12:00执行
+    args:
+      hour: 12
+      minute: 0
+    # 重试机制-最大重试次数：如果任务失败，最多重试5次
+    max_attempts: 5
+    # 重试机制-重试延迟：每次重试之间等待5秒
+    retry_delay: 5
+# 如果任务在所有重试后仍然失败，它将被标记为失败，并等待下一次调度
+
+# 缓存配置（生产环境）
+cache:
+  type: redis  # 生产环境优先使用Redis缓存
+  ttl: 3600  # 默认缓存时间（秒），设置缓存项的生存时间
+  max_size: 1000  # 最大缓存项数，仅适用于内存缓存，用于限制内存使用
+  redis:
+    host: ${PPT_CACHE__REDIS__HOST}
+    port: ${PPT_CACHE__REDIS__PORT}
+    db: 0  # Redis数据库索引，用于选择特定的数据库
+
+# 监控配置（生产环境）
+monitoring:
+  prometheus_port: 9966  # Prometheus监控服务的端口号，用于暴露监控指标
+  cpu_threshold: 70  # CPU使用率阈值（百分比），生产环境设置更低的阈值
+  memory_threshold: 70  # 内存使用率阈值（百分比），生产环境设置更低的阈值
+  max_retries: 10  # 指标服务重启的最大次数
+  retry_interval_seconds: 10  # 指标服务重启间隔
+
+# API服务器配置（生产环境）
+api:
+  # 服务器监听的IP地址
+  # "0.0.0.0" 表示监听所有可用的网络接口
+  host: "0.0.0.0"
+  
+  # 服务器监听的端口号
+  # 生产环境可能使用不同的端口
+  port: 8000
+  
+  # 事件循环类型
+  # "uvloop" 在生产环境中提供更好的性能
+  loop: "uvloop"
+  
+  # 生产环境不自动打开API文档
+  open_api_on_startup: false
+  
+  # API文档的URL路径
+  # 生产环境可能禁用文档或设置为 null
+  docs_url: null  # 生产环境禁用文档
+  
+  # 允许跨域请求的源
+  # 生产环境应该指定具体的域名，而不是"*"
+  cors_origins: ["https://your-domain.com", "https://api.your-domain.com"]
+  
+  # 最大并发请求数
+  # 生产环境可能需要更高的并发数
+  max_concurrency: 500
+  
+  # 请求超时时间(秒)
+  # 生产环境可能需要更短的超时时间
+  request_timeout: 15
+  
+  # API版本（从公共配置获取）
+  api_version: v1
+
+security:
+  token:
+    secret_key: ${PPT_SECURITY__TOKEN__SECRET_KEY}
+    algorithm: HS256
+    access_token_expire_minutes: 30
+    refresh_token_expire_days: 3
+  revocation:
+    backend: redis
+    key_prefix: ppt:security
+    default_ttl_seconds: 259200
+    memory_cleanup_interval_seconds: 45
+    redis:
+      host: ${PPT_SECURITY__REVOCATION__REDIS__HOST:-redis}
+      port: ${PPT_SECURITY__REVOCATION__REDIS__PORT:-6379}
+      db: 2
+      username:
+      password:
+      ssl: false
+  audit:
+    enabled: true
+    include_username: true

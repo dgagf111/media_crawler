@@ -1,0 +1,124 @@
+# Alembic 数据库迁移工具使用说明
+
+## 简介
+
+Alembic 是一个轻量级的数据库迁移工具，专为 SQLAlchemy 设计。它允许您以渐进的方式更改数据库模式，同时保持现有数据的完整性。本项目使用 Alembic 来管理数据库结构的变更。
+
+## 特性
+
+1. 自动生成迁移脚本
+2. 支持升级和降级操作
+3. 分支迁移支持
+4. 独立于数据库的操作
+5. 事务支持
+6. 可编程的环境
+
+## 安装
+
+确保已安装 Alembic:
+
+```
+pip install alembic
+```
+
+## 配置
+
+1. Alembic 配置文件位于 `alembic.ini`。主要配置项已预设。
+2. 环境配置文件位于 `db/alembic/env.py`。该文件已配置为使用项目的配置系统获取数据库连接信息。
+
+## 基本使用
+
+### 创建新的迁移
+
+```
+alembic revision --autogenerate -m "描述你的变更"
+```
+
+这将在 `db/alembic/versions/` 目录下创建一个新的迁移脚本。
+
+### 应用迁移
+
+```
+alembic upgrade head
+```
+
+这将应用所有未执行的迁移到最新版本。
+
+### 回滚迁移
+
+```
+alembic downgrade -1
+```
+
+这将回滚最后一次迁移。
+
+### 查看当前迁移状态
+
+```
+alembic current
+```
+
+### 查看迁移历史
+
+```
+alembic history
+```
+
+## 高级用法
+
+### 指定迁移版本
+
+升级到特定版本：
+
+```
+alembic upgrade <revision>
+```
+
+降级到特定版本：
+
+```
+alembic downgrade <revision>
+```
+
+### 相对迁移
+
+升级或降级相对数量的版本：
+
+```
+alembic upgrade +2
+alembic downgrade -1
+```
+
+### 生成 SQL 脚本
+
+生成从当前版本到目标版本的 SQL 脚本：
+
+```
+alembic upgrade <target_revision> --sql > migration.sql
+```
+
+## 最佳实践
+
+1. 经常创建和应用小型迁移，而不是大型、复杂的迁移。
+2. 在应用到生产环境之前，始终在测试环境中测试迁移。
+3. 使用有意义的迁移描述，以便于理解每个迁移的目的。
+4. 定期检查和清理旧的迁移脚本。
+5. 在执行迁移之前备份数据库。
+
+## 故障排除
+
+1. 如果遇到 "Can't locate revision identified by '...'"，确保所有开发人员都有最新的迁移脚本。
+2. 如果自动生成没有检测到更改，检查你的模型是否正确导入到 `env.py` 中。
+3. 对于复杂的模式更改，可能需要手动编辑生成的迁移脚本。
+
+## 注意事项
+
+* Alembic 不会自动处理数据迁移。如果模式更改需要数据转换，你需要在迁移脚本中手动处理。
+* 在多人开发环境中，协调迁移脚本的创建和应用非常重要，以避免冲突。
+
+## 更多资源
+
+* [Alembic 官方文档](https://alembic.sqlalchemy.org/en/latest/)
+* [SQLAlchemy 文档](https://docs.sqlalchemy.org/en/14/)
+
+通过遵循这些指南，你可以有效地使用 Alembic 来管理数据库模式的变更，确保数据库结构与应用程序代码保持同步。

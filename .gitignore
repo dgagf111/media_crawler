@@ -1,0 +1,46 @@
+# 虚拟环境
+venv/
+.venv/
+env/
+
+# Python缓存文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 日志文件
+*.log
+
+# 本地配置文件
+.env
+config.ini
+
+# IDE相关
+.vscode/
+.idea/
+.cursorignore
+# Claude 配置目录，但允许 skills 子目录
+.claude/*
+!.claude/skills/
+!.claude/skills/*
+
+# 系统文件
+.DS_Store  # macOS
+Thumbs.db  # Windows
+
+# 依赖管理文件（可选，取决于您的工作流程）
+# pip-lock.txt
+# poetry.lock
+
+# 构建输出
+build/
+dist/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# 忽略 Alembic 的版本文件夹，但保留迁移脚本
+db/alembic/versions/*
+!db/alembic/versions/*.py

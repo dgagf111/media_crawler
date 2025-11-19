@@ -1,0 +1,202 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pythonprojecttemplate"
+version = "1.0.0"
+description = "统一的Python应用程序框架，便于快速开发和部署"
+authors = [
+    {name = "pythonProjectTemplate Team", email = "team@pythonprojecttemplate.com"}
+]
+maintainers = [
+    {name = "pythonProjectTemplate Team", email = "team@pythonprojecttemplate.com"}
+]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.12"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Framework :: FastAPI",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
+]
+keywords = ["framework", "fastapi", "python", "template", "microservice"]
+
+# 核心依赖
+dependencies = [
+    "fastapi>=0.112.0",
+    "uvicorn[standard]>=0.30.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0.0",
+    "pydantic-settings>=2.4.0",
+    "sqlalchemy>=2.0.30",
+    "mysql-connector-python>=9.0.0",
+    "pymysql>=1.1.0",
+    "apscheduler>=3.10.0",
+    "cachetools>=5.5.0",
+    "redis>=5.0.0",
+    "prometheus-client>=0.20.0",
+    "psutil>=6.0.0",
+    "requests>=2.32.0",
+    "alembic>=1.13.0",
+    "openpyxl>=3.1.0",
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "python-multipart>=0.0.9",
+]
+
+# 可选依赖组
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-mock>=3.14.0",
+    "httpx>=0.27.0",
+    "fakeredis>=2.23.0",
+    "black>=24.0.0",
+    "isort>=5.13.0",
+    "mypy>=1.11.0",
+    "pre-commit>=3.8.0",
+    "coverage>=7.6.0",
+]
+test = [
+    "pytest>=8.3.0",
+    "pytest-mock>=3.14.0",
+    "httpx>=0.27.0",
+    "fakeredis>=2.23.0",
+    "coverage>=7.6.0",
+]
+docs = [
+    "mkdocs>=1.6.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.26.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/pythonprojecttemplate"
+Documentation = "https://pythonprojecttemplate.readthedocs.io/"
+Repository = "https://github.com/your-org/pythonprojecttemplate.git"
+"Bug Tracker" = "https://github.com/your-org/pythonprojecttemplate/issues"
+
+[project.scripts]
+pythonprojecttemplate = "pythonprojecttemplate.main:main"
+
+# 包配置
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pythonprojecttemplate*"]
+
+[tool.setuptools.package-data]
+pythonprojecttemplate = [
+    "py.typed",
+    "env.yaml",
+    "config/*.yaml",
+    "cache/*.yaml",
+    "db/sqlite_framework/data/*",
+]
+
+# Black 配置
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort 配置
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 88
+src_paths = ["src", "tests"]
+
+# mypy 配置
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = [
+    "alembic.*",
+    "prometheus_client.*",
+    "psutil.*",
+    "mysql.connector.*",
+    "pymysql.*",
+    "redis.*",
+    "cachetools.*",
+    "apscheduler.*",
+]
+ignore_missing_imports = true
+
+# pytest 配置
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--disable-warnings",
+    "--tb=short",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# coverage 配置
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+]
