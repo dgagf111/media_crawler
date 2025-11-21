@@ -16,6 +16,8 @@ from pythonprojecttemplate.api.exception.custom_exceptions import (
 )
 from pythonprojecttemplate.api.models.result_vo import ResultVO
 from pythonprojecttemplate.api.http_status import HTTPStatus
+from media_crawler.api.spider_xhs_router import router as spider_xhs_router
+from media_crawler.api.xhs_downloader_router import router as xhs_downloader_router
 
 logger = get_logger()
 
@@ -284,3 +286,7 @@ async def third_party_test(current_app: str = Depends(get_current_app)):
 @api_router.get("/test_exception")
 async def test_exception_route():
     raise APIException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR.code, detail="测试异常")
+
+
+api_router.include_router(spider_xhs_router)
+api_router.include_router(xhs_downloader_router)
