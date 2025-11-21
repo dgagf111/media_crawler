@@ -56,7 +56,7 @@ pip install -r dependencies/requirements-dev-only.txt
 
 **核心框架**:
 - `fastapi==0.112.2` - 高性能异步Web框架
-- `uvicorn==0.30.6` - ASGI服务器
+- `uvicorn==0.31.1` - ASGI服务器
 - `sqlalchemy==2.0.32` - 现代ORM框架
 
 **数据库驱动**:

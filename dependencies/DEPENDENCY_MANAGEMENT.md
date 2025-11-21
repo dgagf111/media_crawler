@@ -29,7 +29,7 @@
 ```bash
 # 高性能异步 Web 框架
 fastapi==0.112.2          # 核心 Web 框架
-uvicorn==0.30.6            # ASGI 服务器
+uvicorn==0.31.1            # ASGI 服务器
 python-multipart==0.0.9   # 文件上传支持
 ```
 
@@ -46,7 +46,7 @@ alembic==1.13.2            # 数据库迁移工具
 ```bash
 # 缓存解决方案
 redis==5.0.8               # Redis 客户端
-cachetools==5.5.0          # 内存缓存工具
+cachetools==6.2.2          # 内存缓存工具
 ```
 
 ### 任务调度栈
@@ -66,7 +66,7 @@ psutil==6.0.0              # 系统信息获取
 ```bash
 # 配置管理
 pyyaml==6.0.2              # YAML 配置解析
-python-dotenv==1.0.1       # 环境变量管理
+python-dotenv==1.2.1       # 环境变量管理
 
 # 安全和加密
 cryptography==43.0.0       # 加密库
@@ -76,7 +76,7 @@ python-jose==3.3.0         # JWT 令牌处理
 
 # HTTP 和网络
 requests==2.32.3           # HTTP 客户端
-httpx==0.27.2              # 异步 HTTP 客户端
+httpx==0.28.1              # 异步 HTTP 客户端
 
 # 文档和数据处理
 openpyxl==3.1.5            # Excel 文件处理
@@ -201,7 +201,7 @@ packages = [{include = "src"}]
 [tool.poetry.dependencies]
 python = "^3.8"
 fastapi = "^0.112.2"
-uvicorn = "^0.30.6"
+uvicorn = "^0.31.1"
 sqlalchemy = "^2.0.32"
 mysql-connector-python = "^9.0.0"
 pymysql = "^1.1.1"
@@ -210,14 +210,14 @@ apscheduler = "^3.10.4"
 prometheus-client = "^0.20.0"
 psutil = "^6.0.0"
 pyyaml = "^6.0.2"
-python-dotenv = "^1.0.1"
+python-dotenv = "^1.2.1"
 cryptography = "^43.0.0"
 passlib = "^1.7.4"
 bcrypt = "^4.2.0"
 python-jose = "^3.3.0"
 requests = "^2.32.3"
-httpx = "^0.27.2"
-cachetools = "^5.5.0"
+httpx = "^0.28.1"
+cachetools = "^6.2.2"
 alembic = "^1.13.2"
 openpyxl = "^3.1.5"
 pytest = "^8.3.2"

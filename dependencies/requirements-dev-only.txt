@@ -42,4 +42,4 @@ mkdocs-material==9.5.34    # Material主题
 mkdocs-mermaid2-plugin==1.1.1  # Mermaid图表支持
 
 # === 增强开发服务器 ===
-uvicorn[standard]==0.30.6  # 包含额外的性能依赖（覆盖基础版本）
+uvicorn[standard]==0.31.1  # 包含额外的性能依赖（覆盖基础版本）
