@@ -4,7 +4,7 @@ import traceback
 from datetime import datetime
 from logging.handlers import RotatingFileHandler
 
-from pythonprojecttemplate.config.settings import settings
+from media_crawler.config.settings import settings
 
 __all__ = ['get_logger']
 
