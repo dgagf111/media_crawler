@@ -104,7 +104,6 @@ include = ["media_crawler*", "pythonprojecttemplate*"]
 [tool.setuptools.package-data]
 pythonprojecttemplate = [
     "py.typed",
-    "env.yaml",
     "config/*.yaml",
     "cache/*.yaml",
     "db/sqlite_framework/data/*",

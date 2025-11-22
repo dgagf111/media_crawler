@@ -18,7 +18,7 @@ src/media_crawler/modules/xhs_downloader/
 ```
 
 ## 配置项
-位于 `config/settings.py -> XHSDownloaderSettings`，可通过 `.env` 或 `env.yaml`/`dev.yaml` 覆盖：
+位于 `config/settings.py -> XHSDownloaderSettings`，可通过 `.env` 或 `config/env.yaml`/`config/dev.yaml` 覆盖：
 
 | 配置项 | 说明 |
 | --- | --- |

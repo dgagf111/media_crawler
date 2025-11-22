@@ -17,7 +17,7 @@ src/media_crawler/modules/spider_xhs/
 ```
 
 ## 配置项
-位于 `config/settings.py -> SpiderXHSSettings`，可在 `env.yaml`/`dev.yaml` 覆盖：
+位于 `config/settings.py -> SpiderXHSSettings`，可在 `config/env.yaml`（基础）与 `config/dev.yaml`/`config/prod.yaml` 覆盖：
 
 | 配置项 | 说明 |
 | --- | --- |

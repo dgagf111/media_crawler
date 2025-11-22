@@ -8,8 +8,8 @@ from pythonprojecttemplate.config.settings import settings as runtime_settings
 
 @pytest.fixture(scope="module")
 def env_config():
-    env_file = resources.files("pythonprojecttemplate").joinpath("env.yaml")
-    with env_file.open('r', encoding='utf-8') as file:
+    env_file = resources.files("pythonprojecttemplate.config").joinpath("config/env.yaml")
+    with env_file.open("r", encoding="utf-8") as file:
         return yaml.safe_load(file)
 
 def test_env_file_attributes(env_config):

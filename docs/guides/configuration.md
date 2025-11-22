@@ -1,5 +1,11 @@
 # 配置指南
 
+## 加载顺序与位置
+- 配置文件目录：默认 `src/media_crawler/config/`（可通过 `PPT_CONFIG_DIR` 覆盖）；基础文件 `config/env.yaml`，环境文件如 `config/dev.yaml`、`config/prod.yaml`。
+- 优先级（高→低）：显式传参 > 环境变量（前缀 `PPT_`）> `.env` > YAML（`env.yaml` + `<env>.yaml`，可用 `PPT_ENV_FILE` 指定单文件）> 默认值。
+- 环境选择：`PPT_ENV` 优先，其次 `env.yaml` 里的 `env` 字段，最终默认为 `dev`。
+- 调试：可用 `from pythonprojecttemplate.config.settings import settings; print(settings.dump())` 查看当前配置，敏感字段自动脱敏；`settings.load_trace` 提供加载源与覆盖记录。
+
 ## Spider_XHS 模块
 
 | 环境变量 | 说明 | 示例 |

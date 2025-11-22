@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+import warnings
+from typing import Any, Dict, List
 
 from .settings import AppSettings, settings as runtime_settings
 
@@ -8,6 +9,7 @@ from .settings import AppSettings, settings as runtime_settings
 class Config:
     """
     Backwards compatible facade around the new AppSettings object.
+    Prefer直接使用 `pythonprojecttemplate.config.settings`。
     """
 
     _instance: Config | None = None
@@ -36,6 +38,11 @@ class Config:
         """
         Reload configuration, optionally using a caller-provided AppSettings object.
         """
+        warnings.warn(
+            "Config.reload 已弃用，请直接实例化 AppSettings 或使用 settings，未来版本将移除。",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self._set_settings(app_settings or AppSettings())
 
     def _load_config(self, app_settings: AppSettings | None = None) -> None:
@@ -88,6 +95,9 @@ class Config:
 
     def get_api_version(self) -> str:
         return self._settings.common.api_version
+
+    def get_load_trace(self) -> List[Any]:
+        return getattr(self._settings, "load_trace", [])
 
 
 config = Config()
